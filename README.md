@@ -1,1 +1,1 @@
-node-js-server-getTiles
+This node server application is deployed on heroku. Link: https://drone-deploy-app.herokuapp.com/
