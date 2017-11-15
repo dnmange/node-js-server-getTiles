@@ -21,23 +21,24 @@ app.set('view engine', 'ejs');
 /*Allowing "https://www.dronedeploy.com"  to access getTiles and parse each request in json format using bodyParser*/
 app.use(express.static(__dirname + '/public'));
 app.use(function(req, res, next) {                    
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
 });
 app.use(bodyParser.json()); 
 
 /*Post request to get encoded data*/
 app.post('/getTiles',function(req, response){
-	console.log("hey there");
 	var tiles = req.body;
 	var encodedTileData = [];
 	var count = 0;
+	
 	for(var i=0;i<tiles.length;i++){
 		request(tiles[i], function(error, res, body){
 	     	var toBase64 = body.toString('base64');
 	        encodedTileData.push(toBase64);
 	        count++;
+	        
 	        if(count==tiles.length){
 	        	response.send(encodedTileData);
 	        }
@@ -47,5 +48,7 @@ app.post('/getTiles',function(req, response){
 
 //server listening
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+	console.log('Node app is running on port', app.get('port'));
 });
+
+app.timeout = 500000;
